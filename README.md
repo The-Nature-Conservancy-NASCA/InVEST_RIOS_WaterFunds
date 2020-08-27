@@ -44,17 +44,11 @@ La URL en la cual se encuentra el repositorio de RIOS corresponde a https://gith
 - Src/natcap: códigos Python de procesamiento
 - User_guide: guías de usuario en inglés y español
 
-En la Figura 3.1 se presenta la distribución del repositorio de RIOS en el GitHub.
- 
-Figura 3.1. Repositorio de RIOS
- 
-Fuente: https://github.com/richpsharp/rios-deprecated
-
 Para efectos prácticos de la WáterFunds App, la única carpeta que es necesaria es la de src/natcap, específicamente los siguientes códigos:
-
-Figura 3.2 Códigos de procesamiento de RIOS en Python
- 
-Fuente: https://github.com/richpsharp/rios-deprecated/tree/master/src/natcap/rios
+- disk_dort.py
+- porter_core.py
+- rios.py
+- rios_build_scenario.py
 
 Los códigos pueden ser descargados directamente del repositorio con ayuda del navegador o haciendo uso de programa git.
 
