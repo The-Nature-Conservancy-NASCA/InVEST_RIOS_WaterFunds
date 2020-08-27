@@ -1,269 +1,125 @@
-# Guía para la configuración de RIOS y InVEST - LINUX
 
-Autor: Jonathan Nogales Pimentel
-Fecha: 24/08/2020
-
-En el actual documento se realiza una breve descripción de la configuración de los ambientes Python para los modelos de RIOS y InVEST en plataformas Linux
-
-## Instalaciones preliminares
-
-RIOS y InVEST para poder llevar acabo procesos espaciales hacen uso de librerías como GDAL. Ésta requiere para su instalación que en el sistema operativo se encuentre configurado los compiladores GCC/g++. En este sentido, se recomienda instalar el paquete Build-Essential el cual proporciona dichos compiladores. Las siguientes líneas de código ilustran el proceso de instalación:
-Actualizar repositorio
-```
-sudo apt-get update
-```
-
-Instalar paquete
-```
-sudo apt-get build-essential
-```
-
-El paquete build-essentials es una referencia para todos los paquetes necesarios para compilar un paquete Debian. Generalmente incluye los compiladores y bibliotecas GCC/g ++ y algunas otras utilidades.
-
-## ¿Qué es un ambiente Python?
-
-Un entorno virtual es una herramienta que ayuda a mantener separadas las dependencias requeridas por un programa escrito en Python. En esencia, el propósito principal de los entornos virtuales de Python es crear un entorno aislado para los proyectos de Python. Esto significa que cada proyecto puede tener sus propias dependencias, independientemente de las dependencias que tengan los demás proyectos.
-
-Figura 2.1 Esquema explicativo de ambientes Python con anaconda.
-![Sin titulo](https://protostar.space/wp-content/uploads/2019/04/conda-root-and-additional-environments.jpeg)
-Fuente: https://protostar.space/wp-content/uploads/2019/04/conda-root-and-additional-environments.jpeg
-
-Anaconda es una distribución de Python que permite de manera amigable crear y administrar ambientes Python, así como también instalar módulos y paquetes. Para efectos del presente documento, la configuración de los ambientes Python se realiza haciendo uso de esta distribución (link de descarga https://www.anaconda.com/).
-
-## Ambiente Python RIOS
-
-Resource Investment Optimization System (RIOS) es un software que se inició a desarrollar hace ya mas de 5 años. De acuerdo con el registro de versiones en su repositorio de GitHub, la primera versión de RIOS en una estructura de proyecto tuvo lugar el 17 de agosto del 2015. Desde ese entonces se han lanzado 12 versiones de este software. Lastimosamente, RIOS ya no es compatible con Natural Capital Project, lo que significa que no proporcionan instalador para descargar, ni tampoco proporcionan corrección de errores ni asistencia al usuario. No obstante, Natural Capital a liberado el código fuente para libre desarrollo, es así que este apartado se centra en la configuración de un ambiente Python para la ejecución de este código.
-
-### Descripción del repositorio de RIOS
-
-La URL en la cual se encuentra el repositorio de RIOS corresponde a https://github.com/richpsharp/rios-deprecated . El repositorio se encuentra distribuido en 5 carpetas a saber:
-
-- Arcgis_preprocessor: contiene el toolbox desarrollado en ArcGIS para la construcción de los preprocesamientos requeridos por RIOS.
-- Exescripts: contiene la secuencia de comandos que concluye las llamadas para iniciar los distintos usuarios interfaces de RIOS.
-- Intaller/Windows: código del instalador para windows
-- Src/natcap: códigos Python de procesamiento
-- User_guide: guías de usuario en inglés y español
-
-En la Figura 3.1 se presenta la distribución del repositorio de RIOS en el GitHub.
- 
-Figura 3.1. Repositorio de RIOS
- 
-Fuente: https://github.com/richpsharp/rios-deprecated
-
-Para efectos prácticos de la WáterFunds App, la única carpeta que es necesaria es la de src/natcap, específicamente los siguientes códigos:
-
-Figura 3.2 Códigos de procesamiento de RIOS en Python
- 
-Fuente: https://github.com/richpsharp/rios-deprecated/tree/master/src/natcap/rios
-
-Los códigos pueden ser descargados directamente del repositorio con ayuda del navegador o haciendo uso de programa git.
-
-### Configuración de ambiente Python 
-
-Dato que RIOS se encuentra programado en Python 2, es necesario crear un ambiente Python con versión 2.7 haciendo uso de la siguiente línea de comando. El ambiente se crea con nombre RIOS, sin embargo, el nombre puede ser modificado por el que sea de mayor preferencia.
-
-```
-conda create --name RIOS python=2.7
-```
-
-Creado al ambiente, se procede a realizar su activación. Esta se realizada a través de la siguiente línea de comando:
-
-```
-conda activate RIOS
-```
-
-El primer paquete que se debe instalar es gdal versión 2.4.4 haciendo uso del comando conda:
-
-```
-conda install -c conda-forge gdal=2.4.4
-```
-
-RIOS para su funcionamiento necesita una serie de procesamientos previos a su ejecución. Como se menciono en el numeral anterior, el repositorio de RIOS trae consigo un preprocesador el cual se encuentra programa en Python, pero haciendo uso de librerías especificas de ArcGIS. Dado que ArcGIS es un software licenciado del TNC tiene su licencia, se opto por no hacer uso de este toolbox dado que se debe realizar un tramite legal para poder tener una licencia que permita su implementación web. Afortunadamente, Natural Capital desarrollo una librería totalmente independiente de ArcGIS. Ésta se encuentra disponible el repositorio de pip y puede ser instalada a través de la siguiente línea de código:
-
-```
-pip install rios_preprocessor
-```
-
-El ultimo requerimiento que necesita RIOS es la librería de análisis estadísticos Scipy, la cual puede instalarse de la siguiente manera.
-
-```
-conda install -c anaconda scipy
-```
- 
-Con esto, se da por terminada la configuración del ambiente Python para RIOS.
-
-### Ambiente Python InVEST
-
-A diferencia de RIOS, InVEST se encuentra programado en Python 3, por lo que es neceario configurar un ambiente con Python 3.7. Esto se pude hacer con la siguiente línea de código:
-
-```
-conda create --name InVEST python=3.7
-```
- 
-Creado el ambiente, se realiza su activación :
-
-```
-conda activate InVEST
-```
-
-Al igual que en la configuración del ambiente Python para RIOS, el primer paquete que se debe instalar es gdal versión 2.4.4 haciendo uso del comando conda:
-
-```
-conda install -c conda-forge gdal=2.4.4
-```
-
-Luego instalamos la librería rtree versión 0.9.4 con ayuda de conda:
-
-```
-conda install -c conda-forge rtree=0.9.4
-```
-
-Luego se instala la librería de InVEST la cual se encuentra disponible en el repositorio de pip.
-
-```
-pip install natcap.invest
-```
- 
-Con esto se da por finalizada la configuración del ambiente Python para InVEST
-
-## Modificaciones de código
-
-Para los pre-procesamientos de RIOS si bien esta librería en pip, fue necesario modificar su código. Básicamente se realizo el cambio de las funciones max y min para que omitan los valores NaN. Es asi que se cambiaron por nanmax y nanmin repectivamente 
-
-## Configuración de código
-En el siguiente apartado se presenta la configuración de los argumentos de entrada para los modelos de RIOS y InVEST incluyendo el preprocesamiento.
-
-### Configuracion general para InVEST
-
-```
-import os, sys
-# Seasonal Water Yield
-from natcap.invest.seasonal_water_yield import seasonal_water_yield as swy
-# Sediment Delivery Ratio
-from natcap.invest.sdr import sdr
-# Nutrient Delivery Ratio
-from natcap.invest.ndr import ndr
-# Anual Water Yield
-from natcap.invest.hydropower import hydropower_water_yield as awy
-# Carbons
-from natcap.invest import carbon
-
-# Inputs
-PathInput       = os.path.join(os.path.split(os.getcwd())[0], 'DATA', '03-InVEST')
-LULC            = os.path.join(PathInput, 'LULC.tif' )
-BioTable        = os.path.join(PathInput, 'Biophysical_Table.csv' )
-RainfallTable   = os.path.join(PathInput, 'Rainfall_Day_Table.csv' )
-DEM             = os.path.join(PathInput, 'DEM.tif' )
-Soil_Texture    = os.path.join(PathInput, 'Texture_Index.tif' )
-Soil_Group      = os.path.join(PathInput, 'Soil_Group.tif' )
-PAW             = os.path.join(PathInput, 'PAW.tif' )
-Pcp_Annual      = os.path.join(PathInput, 'P_Year.tif' )
-Pcp_Month       = os.path.join(PathInput, 'P' )
-Erosivity       = os.path.join(PathInput, 'R.tif' )
-Erodibility     = os.path.join(PathInput, 'K.tif' )
-Soil_Depth      = os.path.join(PathInput, 'Soil_Depth.tif' )
-ETR_Annual      = os.path.join(PathInput, 'ETR.tif' )
-ETo_Annual      = os.path.join(PathInput, 'ETO.tif')
-ETo_Month       = os.path.join(PathInput, 'ETo' )
-Suffix          = 'Skaphe'
-Watershed       = os.path.join(PathInput, 'Basin' ,'Basin.shp')
-
-#
-args = {}
-args['biophysical_table_path']          = BioTable
-args['lulc_path']                       = LULC
-args['depth_to_root_rest_layer_path']   = Soil_Depth
-args['do_scarcity_and_valuation']       = False
-args['eto_path']                        = ETo_Annual
-args['pawc_path']                       = PAW
-args['precipitation_path']              = Pcp_Annual
-args['results_suffix']                  = 'Skaphe'
-args['seasonality_constant']            = '15'
-args['sub_watersheds_path']             = ''
-args['watersheds_path']                 = Watershed
-args['alpha_m']                         = '0.08333'
-args['aoi_path']                        = Watershed
-args['beta_i']                          = '1'
-args['dem_raster_path']                 = DEM
-args['et0_dir']                         = ETo_Month
-args['gamma']                           = '1'
-args['lulc_raster_path']                = LULC
-args['monthly_alpha']                   = False
-args['precip_dir']                      = Pcp_Month
-args['rain_events_table_path']          = RainfallTable
-args['soil_group_path']                 = Soil_Group
-args['threshold_flow_accumulation']     = '20'
-args['user_defined_climate_zones']      = False
-args['user_defined_local_recharge']     = False
-args['dem_path']                        = DEM
-args['drainage_path']                   = ''
-args['erodibility_path']                = Erodibility
-args['erosivity_path']                  = Erosivity
-args['ic_0_param']                      = '0.5'
-args['k_param']                         = '2'
-args['sdr_max']                         = '0.8'
-args['calc_n']                          = True
-args['calc_p']                          = True
-args['k_param']                         = '2'
-args['runoff_proxy_path']               = Pcp_Annual
-args['subsurface_critical_length_n']    = '1000'
-args['subsurface_critical_length_p']    = '1000'
-args['subsurface_eff_n']                = '0.5'
-args['subsurface_eff_p']                = '0.5'
-args['calc_sequestration']              = False
-args['carbon_pools_path']               = BioTable
-args['do_redd']                         = False
-args['do_valuation']                    = False
-args['lulc_cur_path']                   = LULC
-
-```
-
-### Anual Water Yield
-
-```
-args['workspace_dir'] = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS','01-Anual-Water-Yield')
+'''
+Anual Water Yield
+'''
+args = {
+    'biophysical_table_path': '/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table_AF_1.csv',
+    'depth_to_root_rest_layer_path': '/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth_AF_1.tif',
+    'do_scarcity_and_valuation': False,
+    'eto_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/02-Evapotranspiration/02-Future/ETo_AF_1_YEAR_13.tif',
+    'lulc_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/03-LandCover/LULC_AF_1.tif',
+    'pawc_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/16-Plant_Available_Water/PAW_AF_1.tif',
+    'precipitation_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/01-Precipitation/02-Future/Pcp_AF_1_YEAR_13.tif',
+    'results_suffix': 'Skaphe',
+    'seasonality_constant': '15',
+    'sub_watersheds_path': '',
+    'watersheds_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/05-Watersheds/Watersheds_AF_1.shp',
+    'workspace_dir': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/01-InVEST_Skaphe/05-AWY',
+}
+# Run
 awy.execute(args)
-```
 
-### Seasonal Water Yield
+'''
+Seasonal Water Yield
+'''
+args = {
+    'alpha_m': '0.08333',
+    'aoi_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\05-Watersheds\\Watersheds_AF_1.shp',
+    'beta_i': '1',
+    'biophysical_table_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\09-Biophysical_Table\\Biophysical_Table_AF_1.csv',
+    'dem_raster_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\08-DEM\\DEM_AF.tif',
+    'et0_dir': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\02-Evapotranspiration\\02-Future',
+    'gamma': '1',
+    'lulc_raster_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\03-LandCover\\LULC_AF_1.tif',
+    'monthly_alpha': False,
+    'precip_dir': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\01-Precipitation\\02-Future',
+    'rain_events_table_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\10-Rainfall_Day_Table\\Rainfall_Day_Table_AF_1.csv',
+    'results_suffix': 'Skaphe',
+    'soil_group_path': 'T:\\01-WaterFundsApp\\00-Tester_InVEST_RIOS_V2\\INPUTS\\04-SoilGroup\\SoilGroup_AF_1.tif',
+    'threshold_flow_accumulation': '20',
+    'user_defined_climate_zones': False,
+    'user_defined_local_recharge': False,
+    'workspace_dir': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/01-InVEST_Skaphe/01-SWY',
+}
 
-```
-args['workspace_dir'] = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS', '02-Seasonal-Water-Yield')
+# Run
 swy.execute(args)
-```
 
-### Sediment Delivery Ratio
+'''
+Sediment Delivery Ratio
+'''
+args = {
+    'biophysical_table_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/09-Biophysical_Table/Biophysical_Table_AF_1.csv',
+    'dem_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/08-DEM/DEM_AF.tif',
+    'drainage_path': '',
+    'erodibility_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/06-SoilErodability/K_AF_1.tif',
+    'erosivity_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/11-Rainfall-Erosivity/R_AF_1.tif',
+    'ic_0_param': '0.5',
+    'k_param': '2',
+    'lulc_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/03-LandCover/LULC_AF_1.tif',
+    'results_suffix': 'Skaphe',
+    'sdr_max': '0.8',
+    'threshold_flow_accumulation': '20',
+    'watersheds_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/05-Watersheds/Watersheds_AF_1.shp',
+    'workspace_dir': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/01-InVEST_Skaphe/02-SDR',
+}
 
-```
-args['workspace_dir'] = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS','03-Sediment-Delivery-Ratio')
+# Run
 sdr.execute(args)
 
-```
+'''
+Nutrient Delivery Ratio
+'''
+args = {
+    'biophysical_table_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/09-Biophysical_Table/Biophysical_Table_AF_1.csv',
+    'calc_n': True,
+    'calc_p': True,
+    'dem_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/08-DEM/DEM_AF.tif',
+    'k_param': '2',
+    'lulc_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/03-LandCover/LULC_AF_1.tif',
+    'results_suffix': 'Skaphe',
+    'runoff_proxy_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/OUTPUTS/02-Anual-Water-Yield/01-Historic/output/per_pixel/wyield_AF_1.tif',
+    'subsurface_critical_length_n': '1000',
+    'subsurface_critical_length_p': '1000',
+    'subsurface_eff_n': '0.5',
+    'subsurface_eff_p': '0.5',
+    'threshold_flow_accumulation': '50',
+    'watersheds_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/05-Watersheds/Watersheds_AF_1.shp',
+    'workspace_dir': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/01-InVEST_Skaphe/03-NDR',
+}
 
-### Nutrient Delivery Ratio
-
-```
-args['workspace_dir'] = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS','04-Nutrient-Delivery-Ratio')
 ndr.execute(args)
-```
 
-### Carbons
 
-```
-args['workspace_dir'] = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS','05-Carbons')
+'''
+Carbons
+'''
+args = {
+    'calc_sequestration': False,
+    'carbon_pools_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/09-Biophysical_Table/Biophysical_Table_AF_1.csv',
+    'do_redd': False,
+    'do_valuation': False,
+    'lulc_cur_path': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/INPUTS/03-LandCover/LULC_AF_1.tif',
+    'results_suffix': 'AF_1',
+    'workspace_dir': 'T:/01-WaterFundsApp/00-Tester_InVEST_RIOS_V2/01-InVEST_Skaphe/04-Carbon',
+}
+
 carbon.execute(args)
-```
 
-### Pre-processor RIOS
 
-```
+
+
+""""
+This is a saved model run from natcap.rios.rios.
+Generated: 08/20/20 16:22:43
+"""
 import os, sys
-sys.path.append(os.path.split(os.getcwd())[0] + os.path.sep + 'FUNCTIONS')
-import RIOS_Toolbox.rios_preprocessor as Pro
-from timeit import default_timer as timer
+sys.path.append(os.path.split(os.getcwd())[0] + os.path.sep + 'FUNCTION')
+import RIOS_Toolbox.rios as rios
 
-PathInput   = os.path.join(os.path.split(os.getcwd())[0], 'DATA', '01-Pre_Processor_RIOS')
-PathOutput  = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS', '06-Pre_Processing_RIOS')
+
+PathInput   = os.path.join(os.path.split(os.getcwd())[0], 'DATA', '02-RIOS')
+PathOutput  = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS', '07-RIOS')
 
 working_path            = PathOutput
 output_path             = PathOutput
@@ -281,96 +137,6 @@ aet_raster_uri          = os.path.join(PathInput, "ETO.tif")
 suffix                  = r"AF_1"
 aoi_shape_uri           = os.path.join(PathInput, "Basin","Basin.shp",)
 streams_raster_uri      = os.path.join(PathInput, "Stream.tif")
-
-start = timer()
-
-Pro.main(   working_path                = working_path,
-            output_path                 = output_path ,
-            hydro_path                  = hydro_path,
-            rios_coeff_table            = rios_coeff_table,
-            lulc_raster_uri             = lulc_raster_uri,
-            dem_raster_uri              = dem_raster_uri,
-            erosivity_raster_uri        = erosivity_raster_uri,
-            erodibility_raster_uri      = erodibility_raster_uri,
-            soil_depth_raster_uri       = soil_depth_raster_uri,
-            precip_month_raster_uri     = precip_month_raster_uri,
-            soil_texture_raster_uri     = soil_texture_raster_uri,
-            precip_annual_raster_uri    = precip_annual_raster_uri,
-            aet_raster_uri              = aet_raster_uri,
-            suffix                      = suffix,
-            aoi_shape_uri               = aoi_shape_uri,
-            streams_raster_uri          = streams_raster_uri,
-            do_erosion          = True,
-            do_nutrient_p       = True,
-            do_nutrient_n       = True,
-            do_flood            = True,
-            do_gw_bf            = True,
-            river_buffer_dist   = 1000)
-
-
-end = timer()
-print(end - start)
-
-```
-
-### RIOS
-
-```
-import os, sys
-sys.path.append(os.path.split(os.getcwd())[0] + os.path.sep + 'FUNCTIONS')
-import RIOS_Toolbox.rios as rios
-
-
-PathInput   = os.path.join(os.path.split(os.getcwd())[0], 'DATA', '02-RIOS')
-PathInput1  = os.path.join(os.path.split(os.getcwd())[0])
-PathOutput  = os.path.join(os.path.split(os.getcwd())[0], 'RESULTS', '07-RIOS')
-
-working_path            = PathOutput
-output_path             = PathOutput
-hydro_path              = PathOutput
-lulc_raster_uri         = os.path.join(PathInput, 'LULC.tif')
-rios_coeff_table        = os.path.join(PathInput, 'Biophysical_Table.csv')
-dem_raster_uri          = os.path.join(PathInput, 'DEM.tif')
-precip_month_raster_uri = os.path.join(PathInput, 'P_Peak.tif')
-soil_texture_raster_uri = os.path.join(PathInput, 'Texture_Index.tif')
-precip_annual_raster_uri= os.path.join(PathInput, 'P_Year.tif')
-erosivity_raster_uri    = os.path.join(PathInput, 'R.tif')
-erodibility_raster_uri  = os.path.join(PathInput, 'K.tif')
-soil_depth_raster_uri   = os.path.join(PathInput, 'Soil_Depth.tif')
-aet_raster_uri          = os.path.join(PathInput, 'ETO.tif')
-ETR_raster_uri          = os.path.join(PathInput, 'ETR.tif')
-Beneficiaries           = os.path.join(PathInput, 'Beneficiaries.tif')
-Aquifer                 = os.path.join(PathInput, 'Aquifer_Area.tif')
-suffix                  = r'AF_1'
-aoi_shape_uri           = os.path.join(PathInput, 'Basin','Basin.shp',)
-streams_raster_uri      = os.path.join(PathInput, 'Stream.tif')
-
-#
-baseflow_downslope      = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','erosion_downslope_retention_index_' + suffix + '.tif')
-baseflow_slope          = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_slope_index_' + suffix + '.tif')
-baseflow_upslope        = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','gwater_upslope_source_' + suffix + '.tif')
-
-gw_downslope            = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','erosion_downslope_retention_index_' + suffix + '.tif')
-gw_slope                = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_slope_index_' + suffix + '.tif')
-gw_upslope              = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','gwater_upslope_source_' + suffix + '.tif')
-
-flood_downslope         = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_downslope_retention_index_' + suffix + '.tif')
-flood_riparian          = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_riparian_index_' + suffix + '.tif')
-flood_slope             = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_slope_index_' + suffix + '.tif')
-flood_upslope           = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','flood_upslope_source_' + suffix + '.tif')
-
-erosion_downslope       = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','erosion_downslope_retention_index_' + suffix + '.tif')
-erosion_riparian        = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','erosion_riparian_index_' + suffix + '.tif')
-erosion_upslope         = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','erosion_upslope_source_' + suffix + '.tif')
-
-phosphorus_downslope    = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','phosphorus_downslope_retention_index_' + suffix + '.tif')
-phosphorus_riparian     = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','phosphorus_riparian_index_' + suffix + '.tif')
-phosphorus_upslope      = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','phosphorus_upslope_source_' + suffix + '.tif')
-
-nitrogen_downslope      = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','nitrogen_downslope_retention_index_' + suffix + '.tif')
-nitrogen_riparian       = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','nitrogen_riparian_index_' + suffix + '.tif')
-nitrogen_upslope        = os.path.join(PathInput1, 'RESULTS','06-Pre_Processing_RIOS','nitrogen_upslope_source_' + suffix + '.tif')
-
 
 args = {
         u'activities': {
@@ -433,8 +199,8 @@ args = {
             ],
             7: [],
         },
-        u'lulc_coefficients_table_uri': rios_coeff_table,
-        u'lulc_uri': lulc_raster_uri,
+        u'lulc_coefficients_table_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
+        u'lulc_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
         u'objectives': {
             u'baseflow': {
                 u'factors': {
@@ -444,7 +210,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': ETR_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/ETR.tif',
                     },
                     u'Annual Average Rainfall': {
                         u'bins': {
@@ -452,7 +218,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': precip_annual_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/P_Year.tif',
                     },
                     u'Beneficiaries': {
                         u'bins': {
@@ -460,7 +226,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -468,13 +234,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': baseflow_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_downslope_retention_index_AF_1.tif',
                     },
                     u'Land Use Land Cover Retention at pixel': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Rough_Rank',
                         },
                     },
@@ -484,7 +250,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': baseflow_slope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_slope_index_AF_1.tif',
                     },
                     u'Soil Texture Index': {
                         u'bins': {
@@ -492,7 +258,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_texture_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Texture_Index.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -500,7 +266,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -508,13 +274,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': baseflow_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/gwater_upslope_source_AF_1.tif',
                     },
                     u'Vegetative Cover Index': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Cover_Rank',
                         },
                     },
@@ -615,7 +381,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -623,21 +389,21 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_downslope_retention_index_AF_1.tif',
                     },
                     u'On-pixel retention': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Sed_Ret',
                         },
                     },
                     u'On-pixel source': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Sed_Exp',
                         },
                     },
@@ -647,7 +413,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosivity_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/R.tif',
                     },
                     u'Riparian continuity': {
                         u'bins': {
@@ -655,7 +421,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_riparian,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_riparian_index_AF_1.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -663,7 +429,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Soil erodibility': {
                         u'bins': {
@@ -671,7 +437,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erodibility_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/K.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -679,7 +445,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_upslope_source_AF_1.tif',
                     },
                 },
                 u'priorities': {
@@ -771,7 +537,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -779,21 +545,21 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_downslope_retention_index_AF_1.tif',
                     },
                     u'On-pixel retention': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Sed_Ret',
                         },
                     },
                     u'On-pixel source': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Sed_Exp',
                         },
                     },
@@ -803,7 +569,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosivity_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/R.tif',
                     },
                     u'Riparian continuity': {
                         u'bins': {
@@ -811,7 +577,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_riparian,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_riparian_index_AF_1.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -819,7 +585,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Soil erodibility': {
                         u'bins': {
@@ -827,7 +593,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erodibility_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/K.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -835,7 +601,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosion_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/erosion_upslope_source_AF_1.tif',
                     },
                 },
                 u'priorities': {
@@ -927,7 +693,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -935,13 +701,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': flood_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_downslope_retention_index_AF_1.tif',
                     },
                     u'Land Use Land Cover Retention at pixel': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Rough_Rank',
                         },
                     },
@@ -951,7 +717,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosivity_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/R.tif',
                     },
                     u'Riparian continuity': {
                         u'bins': {
@@ -959,7 +725,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': flood_riparian,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_riparian_index_AF_1.tif',
                     },
                     u'Slope Index': {
                         u'bins': {
@@ -967,7 +733,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': flood_slope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_slope_index_AF_1.tif',
                     },
                     u'Soil Texture Index': {
                         u'bins': {
@@ -975,7 +741,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_texture_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Texture_Index.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -983,13 +749,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': flood_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_upslope_source_AF_1.tif',
                     },
                     u'Vegetative Cover Index': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Cover_Rank',
                         },
                     },
@@ -1083,7 +849,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': ETR_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/ETR.tif',
                     },
                     u'Annual Average Rainfall': {
                         u'bins': {
@@ -1091,7 +857,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': precip_annual_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/P_Year.tif',
                     },
                     u'Beneficiaries': {
                         u'bins': {
@@ -1099,7 +865,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -1107,13 +873,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': gw_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_downslope_retention_index_AF_1.tif',
                     },
                     u'Land Use Land Cover Retention at pixel': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Rough_Rank',
                         },
                     },
@@ -1123,7 +889,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Aquifer,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Aquifer_Area.tif',
                     },
                     u'Slope Index': {
                         u'bins': {
@@ -1131,7 +897,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': gw_slope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/flood_slope_index_AF_1.tif',
                     },
                     u'Soil Texture Index': {
                         u'bins': {
@@ -1139,7 +905,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_texture_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Texture_Index.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -1147,7 +913,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -1155,13 +921,13 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': gw_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/gwater_upslope_source_AF_1.tif',
                     },
                     u'Vegetative Cover Index': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'Cover_Rank',
                         },
                     },
@@ -1269,7 +1035,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -1277,21 +1043,21 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': nitrogen_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/nitrogen_downslope_retention_index_AF_1.tif',
                     },
                     u'On-pixel retention': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'N_Ret',
                         },
                     },
                     u'On-pixel source': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'N_Exp',
                         },
                     },
@@ -1301,7 +1067,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': nitrogen_riparian,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/nitrogen_riparian_index_AF_1.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -1309,7 +1075,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -1317,7 +1083,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': nitrogen_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/nitrogen_upslope_source_AF_1.tif',
                     },
                 },
                 u'priorities': {
@@ -1395,7 +1161,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': Beneficiaries,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Beneficiaries.tif',
                     },
                     u'Downslope retention index': {
                         u'bins': {
@@ -1403,21 +1169,21 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': phosphorus_downslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/phosphorus_downslope_retention_index_AF_1.tif',
                     },
                     u'On-pixel retention': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'P_Ret',
                         },
                     },
                     u'On-pixel source': {
                         u'bins': {
                             u'key_field': u'lulc_general',
-                            u'raster_uri': lulc_raster_uri,
-                            u'uri': rios_coeff_table,
+                            u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/LULC.tif',
+                            u'uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Biophysical_Table.csv',
                             u'value_field': u'P_Exp',
                         },
                     },
@@ -1427,7 +1193,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erosivity_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/R.tif',
                     },
                     u'Riparian continuity': {
                         u'bins': {
@@ -1435,7 +1201,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': phosphorus_riparian,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/phosphorus_riparian_index_AF_1.tif',
                     },
                     u'Soil depth': {
                         u'bins': {
@@ -1443,7 +1209,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': soil_depth_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/Soil_Depth.tif',
                     },
                     u'Soil erodibility': {
                         u'bins': {
@@ -1451,7 +1217,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': erodibility_raster_uri,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/03-INPUTS_RIOS_InVEST/K.tif',
                     },
                     u'Upslope source': {
                         u'bins': {
@@ -1459,7 +1225,7 @@ args = {
                             'inverted': False,
                             'type': 'interpolated',
                         },
-                        u'raster_uri': phosphorus_upslope,
+                        u'raster_uri': u'/home/tnc/Documents/01-PreProcessing_RIOS/02-OUTPUTS_PrePro_RIOS/phosphorus_upslope_source_AF_1.tif',
                     },
                 },
                 u'priorities': {
@@ -1699,10 +1465,8 @@ args = {
                 u'transition_type': u'restoration',
             },
         ],
-        u'workspace_dir': PathOutput,
+        u'workspace_dir': u'/home/tnc/Documents/01-PreProcessing_RIOS/04-OUTPUTS_RIOS_InVEST/RIOS',
 }
 
-
-rios.execute(args)
-
-```
+if __name__ == '__main__':
+    rios.execute(args)

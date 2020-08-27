@@ -1,0 +1,30 @@
+{
+    "revegetation_assisted": {
+        "raster_value": 5, 
+        "type": "restoration"
+    }, 
+    "agricultural_vegetation_managment": {
+        "raster_value": 0, 
+        "type": "agriculture"
+    }, 
+    "fertilizer_management": {
+        "raster_value": 2, 
+        "type": "agriculture"
+    }, 
+    "keep_native_vegetation": {
+        "raster_value": 3, 
+        "type": "protection"
+    }, 
+    "ditching": {
+        "raster_value": 1, 
+        "type": "agriculture"
+    }, 
+    "revegetation_unassisted": {
+        "raster_value": 6, 
+        "type": "restoration"
+    }, 
+    "pasture_management": {
+        "raster_value": 4, 
+        "type": "agriculture"
+    }
+}

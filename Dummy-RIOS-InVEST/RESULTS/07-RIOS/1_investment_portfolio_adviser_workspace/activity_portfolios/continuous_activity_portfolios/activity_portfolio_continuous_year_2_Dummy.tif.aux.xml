@@ -1,0 +1,32 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <GDALRasterAttributeTable tableType="thematic">
+      <FieldDefn index="0">
+        <Name>Value</Name>
+        <Type>0</Type>
+        <Usage>5</Usage>
+      </FieldDefn>
+      <FieldDefn index="1">
+        <Name>Activity</Name>
+        <Type>2</Type>
+        <Usage>2</Usage>
+      </FieldDefn>
+      <Row index="0">
+        <F>0</F>
+        <F>agroforestry</F>
+      </Row>
+      <Row index="1">
+        <F>1</F>
+        <F>grass_strips</F>
+      </Row>
+      <Row index="2">
+        <F>2</F>
+        <F>riparian_mgmt</F>
+      </Row>
+      <Row index="3">
+        <F>3</F>
+        <F>terracing</F>
+      </Row>
+    </GDALRasterAttributeTable>
+  </PAMRasterBand>
+</PAMDataset>

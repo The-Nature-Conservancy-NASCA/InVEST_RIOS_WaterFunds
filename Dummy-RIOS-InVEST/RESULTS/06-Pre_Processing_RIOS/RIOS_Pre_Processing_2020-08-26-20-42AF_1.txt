@@ -1,0 +1,22 @@
+RIOS PRE-PROCESSING PARAMETERS
+______________________________
+
+Date and Time: 2020-08-26 20:42
+Calculate for Erosion Control: true
+Calculate for Phosphorus Retention: true
+Calculate for Nitrogen Retention: true
+Calculate for Flood Mitigation: true
+Calculate for Groundwater Recharge/Baseflow: true
+Workspace: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/06-Pre_Processing_RIOS/
+Output path: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/06-Pre_Processing_RIOS/
+land use/land cover: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/LULC.tif
+RIOS biophysical coefficient table: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/Biophysical_Table.csv
+DEM: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/DEM.tif
+rainfall erosivity: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/R.tif
+erodibility: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/K.tif
+soil depth: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/Soil_Depth.tif
+precipitation for wettest month: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/P_Peak.tif
+soil texture: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/Texture_Index.tif
+annual average precipitation: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/P_Year.tif
+actual evapotranspiration: /home/tnc/Desktop/07-Dummy-RIOS-InVEST/DATA/01-Pre_Processor_RIOS/ETO.tif
+Suffix: AF_1

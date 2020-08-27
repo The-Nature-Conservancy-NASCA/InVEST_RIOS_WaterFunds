@@ -1,0 +1,8 @@
+lucode,LULC_desc,terracing,grass_strips,riparian_mgmt,agroforestry
+5,Urban and paved roads,0,0,0,0
+3,Grass,0,0,0,1
+4,General agriculture,1,1,0,1
+2,Forest,0,0,0,0
+1,Water,0,0,0,0
+7,Forest plantation,0,0,0,0
+6,Agroforestry,1,1,0,0

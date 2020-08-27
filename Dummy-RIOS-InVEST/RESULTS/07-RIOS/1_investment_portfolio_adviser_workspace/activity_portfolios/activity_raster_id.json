@@ -1,0 +1,18 @@
+{
+    "grass_strips": {
+        "index": 1, 
+        "uri": "/home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/07-RIOS/1_investment_portfolio_adviser_workspace/activity_scores/grass_strips_Dummy.tif"
+    }, 
+    "riparian_mgmt": {
+        "index": 2, 
+        "uri": "/home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/07-RIOS/1_investment_portfolio_adviser_workspace/activity_scores/riparian_mgmt_Dummy.tif"
+    }, 
+    "terracing": {
+        "index": 3, 
+        "uri": "/home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/07-RIOS/1_investment_portfolio_adviser_workspace/activity_scores/terracing_Dummy.tif"
+    }, 
+    "agroforestry": {
+        "index": 0, 
+        "uri": "/home/tnc/Desktop/07-Dummy-RIOS-InVEST/RESULTS/07-RIOS/1_investment_portfolio_adviser_workspace/activity_scores/agroforestry_Dummy.tif"
+    }
+}
