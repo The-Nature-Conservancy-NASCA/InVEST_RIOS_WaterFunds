@@ -63,41 +63,41 @@ args = {
             u'agroforestry': {
                 u'measurement_unit': u'area',
                 u'measurement_value': 1000000.0,
-                u'unit_cost': 1.0,
+                u'unit_cost': 100.0,
             },
             u'grass_strips': {
                 u'measurement_unit': u'area',
                 u'measurement_value': 1000000.0,
-                u'unit_cost': 1.0,
+                u'unit_cost': 100.0,
             },
             u'riparian_mgmt': {
                 u'measurement_unit': u'area',
                 u'measurement_value': 1000000.0,
-                u'unit_cost': 1.0,
+                u'unit_cost': 100.0,
             },
             u'terracing': {
                 u'measurement_unit': u'area',
                 u'measurement_value': 1000000.0,
-                u'unit_cost': 1.0,
+                u'unit_cost': 100.0,
             },
         },
         u'activity_shapefiles': [],
         u'budget_config': {
             u'activity_budget': {
                 u'agroforestry': {
-                    u'budget_amount': 50000.0,
+                    u'budget_amount': 100.0,
                 },
                 u'grass_strips': {
-                    u'budget_amount': 50000.0,
+                    u'budget_amount': 100.0,
                 },
                 u'riparian_mgmt': {
-                    u'budget_amount': 50000.0,
+                    u'budget_amount': 100.0,
                 },
                 u'terracing': {
-                    u'budget_amount': 50000.0,
+                    u'budget_amount': 100.0,
                 },
             },
-            u'floating_budget': 26329000,
+            u'floating_budget': 3000,
             u'if_left_over': u'Report remainder',
             u'years_to_spend': 5,
         },
