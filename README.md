@@ -117,7 +117,55 @@ Luego se instala la librería de InVEST la cual se encuentra disponible en el re
 ```
 pip install natcap.invest
 ```
- 
+
+Por ultimo, se debe modificar la libreria geoprocessing del paquete pygeoprocessing las lineas 1309 a la 1318 (se muestran a continuación)
+```
+aggregate_stats[agg_fid]['min'] = min(
+    numpy.min(masked_clipped_block),
+    aggregate_stats[agg_fid]['min'])
+aggregate_stats[agg_fid]['max'] = max(
+    numpy.max(masked_clipped_block),
+    aggregate_stats[agg_fid]['max'])
+aggregate_stats[agg_fid]['count'] += (
+    masked_clipped_block.size)
+aggregate_stats[agg_fid]['sum'] += numpy.sum(
+    masked_clipped_block)
+```
+
+por las siguientes lineas
+```
+aggregate_stats[agg_fid]['min'] = min(
+    numpy.nanmin(masked_clipped_block),
+    aggregate_stats[agg_fid]['min'])
+aggregate_stats[agg_fid]['max'] = max(
+    numpy.nanmax(masked_clipped_block),
+    aggregate_stats[agg_fid]['max'])
+aggregate_stats[agg_fid]['count'] += (
+    masked_clipped_block.size)
+aggregate_stats[agg_fid]['sum'] += numpy.nansum(
+    masked_clipped_block)
+```
+
+Igual manera las lineas 1386 a la 1391 (muestran a continuación)
+```
+aggregate_stats[unset_fid]['min'] = numpy.min(
+    valid_unset_fid_block)
+aggregate_stats[unset_fid]['max'] = numpy.max(
+    valid_unset_fid_block)
+aggregate_stats[unset_fid]['sum'] = numpy.sum(
+    valid_unset_fid_block)
+```
+
+por las siguientes lineas
+```
+aggregate_stats[unset_fid]['min'] = numpy.nanmin(
+    valid_unset_fid_block)
+aggregate_stats[unset_fid]['max'] = numpy.nanmax(
+    valid_unset_fid_block)
+aggregate_stats[unset_fid]['sum'] = numpy.nansum(
+    valid_unset_fid_block)
+```
+
 Con esto se da por finalizada la configuración del ambiente Python para InVEST
 
 ## Modificaciones de código
