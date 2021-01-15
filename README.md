@@ -115,7 +115,7 @@ conda install -c conda-forge rtree=0.9.4
 Luego se instala la librería de InVEST la cual se encuentra disponible en el repositorio de pip.
 
 ```
-pip install natcap.invest
+pip install natcap.invest==3.8.9
 ```
 
 Por ultimo, se debe modificar la libreria geoprocessing del paquete pygeoprocessing las lineas 1309 a la 1318 (se muestran a continuación)
