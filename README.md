@@ -15,7 +15,7 @@ sudo apt-get update
 
 Instalar paquete
 ```
-sudo apt-get build-essential
+sudo apt-get install build-essential
 ```
 
 El paquete build-essentials es una referencia para todos los paquetes necesarios para compilar un paquete Debian. Generalmente incluye los compiladores y bibliotecas GCC/g ++ y algunas otras utilidades.
